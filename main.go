@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/cairomedeiros/todo-list/internal/router"
+	"github.com/cairomedeiros/todo-list/router"
 )
 
 func main() {
