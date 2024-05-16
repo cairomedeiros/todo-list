@@ -6,6 +6,9 @@ import (
 )
 
 func initializeRoutes(r *mux.Router) {
+	//Initialize Handler
+	handler.InitializeHandler()
+
 	r.HandleFunc("/createtodo", handler.CreateToDoHandler).Methods("POST") //POST
 	r.HandleFunc("/listAll", handler.ListAllHandler).Methods("GET")        //GET
 	r.HandleFunc("/{id}", handler.GetByIdHandler).Methods("GET")           //GET
