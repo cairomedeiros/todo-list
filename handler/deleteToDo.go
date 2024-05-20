@@ -13,6 +13,9 @@ func DeleteToDoHandler(w http.ResponseWriter, r *http.Request) {
 
 	todo := schemas.ToDo{}
 
-	db.Find(&todo, id)
+	if err := db.Find(&todo, id).Error; err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
 	db.Unscoped().Delete(&todo, id)
 }
