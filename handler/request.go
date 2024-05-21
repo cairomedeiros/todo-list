@@ -8,3 +8,9 @@ type CreateToDoRequest struct {
 	Description  string    `json:"description"`
 	CreationDate time.Time `json:"creationDate"`
 }
+
+type UpdateToDoRequest struct {
+	Title        string    `json:"title"`
+	Description  string    `json:"description"`
+	CreationDate time.Time `json:"creationDate"`
+}
