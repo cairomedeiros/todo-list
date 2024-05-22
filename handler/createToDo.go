@@ -17,9 +17,8 @@ func CreateToDoHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	todo := schemas.ToDo{
-		Title:        request.Title,
-		Description:  request.Description,
-		CreationDate: request.CreationDate,
+		Title:       request.Title,
+		Description: request.Description,
 	}
 	if err := db.Create(&todo).Error; err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
