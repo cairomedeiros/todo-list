@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"encoding/json"
 	"net/http"
 
 	"github.com/cairomedeiros/todo-list/schemas"
@@ -11,11 +12,14 @@ func DeleteToDoHandler(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	id := vars["id"]
 
-	todo := schemas.ToDo{}
+	task := schemas.Task{}
 
-	if err := db.Find(&todo, id).Error; err != nil {
+	if err := db.Find(&task, id).Error; err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
-	db.Unscoped().Delete(&todo, id)
+	db.Unscoped().Delete(&task, id)
+
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(map[string]string{"message": "ToDo deleted successfully"})
 }
