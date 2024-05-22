@@ -14,9 +14,9 @@ func GetByIdHandler(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	id := vars["id"]
 
-	todo := schemas.ToDo{}
+	task := schemas.Task{}
 
-	if err := db.First(&todo, id).Error; err != nil {
+	if err := db.First(&task, id).Error; err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			http.Error(w, "Data not found", http.StatusNotFound)
 			return
@@ -26,5 +26,5 @@ func GetByIdHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	w.WriteHeader(http.StatusOK)
-	json.NewEncoder(w).Encode(todo)
+	json.NewEncoder(w).Encode(task)
 }

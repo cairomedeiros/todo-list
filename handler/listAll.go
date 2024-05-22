@@ -9,9 +9,9 @@ import (
 )
 
 func ListAllHandler(w http.ResponseWriter, r *http.Request) {
-	var todos []schemas.ToDo
+	var tasks []schemas.Task
 
-	result := db.Find(&todos)
+	result := db.Find(&tasks)
 
 	if result.Error != nil {
 		http.Error(w, result.Error.Error(), http.StatusInternalServerError)
@@ -20,7 +20,7 @@ func ListAllHandler(w http.ResponseWriter, r *http.Request) {
 	log.Printf("%d records found.\n", result.RowsAffected)
 
 	w.WriteHeader(http.StatusOK)
-	if err := json.NewEncoder(w).Encode(todos); err != nil {
+	if err := json.NewEncoder(w).Encode(tasks); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
 }

@@ -4,7 +4,7 @@ import (
 	"gorm.io/gorm"
 )
 
-type ToDo struct {
+type Task struct {
 	gorm.Model
 	Title       string
 	Description string

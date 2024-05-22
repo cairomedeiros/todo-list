@@ -16,11 +16,11 @@ func CreateToDoHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	todo := schemas.ToDo{
+	task := schemas.Task{
 		Title:       request.Title,
 		Description: request.Description,
 	}
-	if err := db.Create(&todo).Error; err != nil {
+	if err := db.Create(&task).Error; err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}

@@ -19,20 +19,20 @@ func UpdateToDoHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	todo := schemas.ToDo{}
-	if err := db.First(&todo, id).Error; err != nil {
+	task := schemas.Task{}
+	if err := db.First(&task, id).Error; err != nil {
 		http.Error(w, "Record not found", http.StatusNotFound)
 		return
 	}
 
 	if request.Title != "" {
-		todo.Title = request.Title
+		task.Title = request.Title
 	}
 	if request.Description != "" {
-		todo.Description = request.Description
+		task.Description = request.Description
 	}
 
-	if err := db.Save(&todo).Error; err != nil {
+	if err := db.Save(&task).Error; err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
