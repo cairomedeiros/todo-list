@@ -31,6 +31,9 @@ func UpdateToDoHandler(w http.ResponseWriter, r *http.Request) {
 	if request.Description != "" {
 		task.Description = request.Description
 	}
+	if request.DueDate != nil {
+		task.DueDate = request.DueDate
+	}
 
 	if err := db.Save(&task).Error; err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)

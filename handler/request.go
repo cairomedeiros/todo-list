@@ -3,14 +3,14 @@ package handler
 import "time"
 
 type CreateToDoRequest struct {
-	Id           uint      `json:"id" gorm:"primaryKey"`
-	Title        string    `json:"title"`
-	Description  string    `json:"description"`
-	CreationDate time.Time `json:"creationDate"`
+	Id          uint       `json:"id" gorm:"primaryKey"`
+	Title       string     `json:"title"`
+	Description string     `json:"description"`
+	DueDate     *time.Time `json:"dueDate"`
 }
 
 type UpdateToDoRequest struct {
-	Title        string    `json:"title"`
-	Description  string    `json:"description"`
-	CreationDate time.Time `json:"creationDate"`
+	Title       string     `json:"title"`
+	Description string     `json:"description"`
+	DueDate     *time.Time `json:"dueDate"`
 }
