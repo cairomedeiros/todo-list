@@ -18,7 +18,7 @@ func GetByIdHandler(w http.ResponseWriter, r *http.Request) {
 
 	if err := db.First(&task, id).Error; err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
-			http.Error(w, "Data not found", http.StatusNotFound)
+			http.Error(w, "Task not found", http.StatusNotFound)
 			return
 		}
 

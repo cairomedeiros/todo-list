@@ -27,6 +27,6 @@ func CreateToDoHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	w.WriteHeader(http.StatusOK)
-	json.NewEncoder(w).Encode(map[string]string{"message": "Data received and saved successfully"})
+	json.NewEncoder(w).Encode(map[string]string{"message": "Task received and saved successfully"})
 
 }

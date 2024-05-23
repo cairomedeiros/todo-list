@@ -17,7 +17,7 @@ func ListAllHandler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, result.Error.Error(), http.StatusInternalServerError)
 	}
 
-	log.Printf("%d records found.\n", result.RowsAffected)
+	log.Printf("%d tasks found.\n", result.RowsAffected)
 
 	w.WriteHeader(http.StatusOK)
 	if err := json.NewEncoder(w).Encode(tasks); err != nil {

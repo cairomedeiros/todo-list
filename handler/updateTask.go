@@ -21,7 +21,7 @@ func UpdateToDoHandler(w http.ResponseWriter, r *http.Request) {
 
 	task := schemas.Task{}
 	if err := db.First(&task, id).Error; err != nil {
-		http.Error(w, "Record not found", http.StatusNotFound)
+		http.Error(w, "Task not found", http.StatusNotFound)
 		return
 	}
 

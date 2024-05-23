@@ -21,5 +21,5 @@ func DeleteToDoHandler(w http.ResponseWriter, r *http.Request) {
 	db.Unscoped().Delete(&task, id)
 
 	w.WriteHeader(http.StatusOK)
-	json.NewEncoder(w).Encode(map[string]string{"message": "ToDo deleted successfully"})
+	json.NewEncoder(w).Encode(map[string]string{"message": "Task deleted successfully"})
 }
