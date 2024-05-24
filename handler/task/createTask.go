@@ -23,6 +23,7 @@ func CreateTaskHandler(w http.ResponseWriter, r *http.Request) {
 		Title:       request.Title,
 		Description: request.Description,
 		DueDate:     request.DueDate,
+		Completed:   request.Completed,
 	}
 	if err := db.Create(&task).Error; err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)

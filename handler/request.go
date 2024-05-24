@@ -16,3 +16,16 @@ type UpdateTaskRequest struct {
 	DueDate     *time.Time `json:"dueDate"`
 	Completed   bool       `json:"completed"`
 }
+
+type CreateSubTaskRequest struct {
+	Id        uint   `json:"id" gorm:"primaryKey"`
+	TaskID    uint   `json:"taskId"`
+	Name      string `json:"name"`
+	Completed bool   `json:"completed"`
+}
+
+type UpdateSubTaskRequest struct {
+	TaskID    uint   `json:"taskId"`
+	Name      string `json:"name"`
+	Completed bool   `json:"completed"`
+}

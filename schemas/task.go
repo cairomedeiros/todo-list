@@ -12,5 +12,5 @@ type Task struct {
 	Description string
 	DueDate     *time.Time
 	Completed   bool
-	SubTasks    []SubTask `gorm:"foreignKey:TaskID"`
+	SubTasks    *[]SubTask `gorm:"foreignKey:TaskID"`
 }
