@@ -1,16 +1,19 @@
-package handler
+package task
 
 import (
 	"encoding/json"
 	"errors"
 	"net/http"
 
+	"github.com/cairomedeiros/todo-list/handler"
 	"github.com/cairomedeiros/todo-list/schemas"
 	"github.com/gorilla/mux"
 	"gorm.io/gorm"
 )
 
 func GetByIdHandler(w http.ResponseWriter, r *http.Request) {
+	db := handler.GetDB()
+
 	vars := mux.Vars(r)
 	id := vars["id"]
 

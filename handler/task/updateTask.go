@@ -1,18 +1,21 @@
-package handler
+package task
 
 import (
 	"encoding/json"
 	"net/http"
 
+	"github.com/cairomedeiros/todo-list/handler"
 	"github.com/cairomedeiros/todo-list/schemas"
 	"github.com/gorilla/mux"
 )
 
-func UpdateToDoHandler(w http.ResponseWriter, r *http.Request) {
+func UpdateTaskHandler(w http.ResponseWriter, r *http.Request) {
+	db := handler.GetDB()
+
 	vars := mux.Vars(r)
 	id := vars["id"]
 
-	request := UpdateToDoRequest{}
+	request := handler.UpdateToDoRequest{}
 	err := json.NewDecoder(r.Body).Decode(&request)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)

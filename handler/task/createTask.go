@@ -1,14 +1,17 @@
-package handler
+package task
 
 import (
 	"encoding/json"
 	"net/http"
 
+	"github.com/cairomedeiros/todo-list/handler"
 	"github.com/cairomedeiros/todo-list/schemas"
 )
 
-func CreateToDoHandler(w http.ResponseWriter, r *http.Request) {
-	request := CreateToDoRequest{}
+func CreateTaskHandler(w http.ResponseWriter, r *http.Request) {
+	db := handler.GetDB()
+
+	request := handler.CreateToDoRequest{}
 
 	err := json.NewDecoder(r.Body).Decode(&request)
 	if err != nil {

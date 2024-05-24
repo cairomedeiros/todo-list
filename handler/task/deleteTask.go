@@ -1,14 +1,17 @@
-package handler
+package task
 
 import (
 	"encoding/json"
 	"net/http"
 
+	"github.com/cairomedeiros/todo-list/handler"
 	"github.com/cairomedeiros/todo-list/schemas"
 	"github.com/gorilla/mux"
 )
 
-func DeleteToDoHandler(w http.ResponseWriter, r *http.Request) {
+func DeleteTaskHandler(w http.ResponseWriter, r *http.Request) {
+	db := handler.GetDB()
+
 	vars := mux.Vars(r)
 	id := vars["id"]
 
