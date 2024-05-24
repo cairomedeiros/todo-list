@@ -1,14 +1,17 @@
-package handler
+package task
 
 import (
 	"encoding/json"
 	"net/http"
 
+	"github.com/cairomedeiros/todo-list/handler"
 	"github.com/cairomedeiros/todo-list/schemas"
 	"github.com/gorilla/mux"
 )
 
-func DeleteToDoHandler(w http.ResponseWriter, r *http.Request) {
+func DeleteTaskHandler(w http.ResponseWriter, r *http.Request) {
+	db := handler.GetDB()
+
 	vars := mux.Vars(r)
 	id := vars["id"]
 
@@ -21,5 +24,5 @@ func DeleteToDoHandler(w http.ResponseWriter, r *http.Request) {
 	db.Unscoped().Delete(&task, id)
 
 	w.WriteHeader(http.StatusOK)
-	json.NewEncoder(w).Encode(map[string]string{"message": "ToDo deleted successfully"})
+	json.NewEncoder(w).Encode(map[string]string{"message": "Task deleted successfully"})
 }

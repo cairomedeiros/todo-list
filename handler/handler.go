@@ -12,3 +12,7 @@ var (
 func InitializeHandler() {
 	db = config.GetPostgreSQL()
 }
+
+func GetDB() *gorm.DB {
+	return db
+}

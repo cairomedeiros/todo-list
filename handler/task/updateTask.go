@@ -1,18 +1,21 @@
-package handler
+package task
 
 import (
 	"encoding/json"
 	"net/http"
 
+	"github.com/cairomedeiros/todo-list/handler"
 	"github.com/cairomedeiros/todo-list/schemas"
 	"github.com/gorilla/mux"
 )
 
-func UpdateToDoHandler(w http.ResponseWriter, r *http.Request) {
+func UpdateTaskHandler(w http.ResponseWriter, r *http.Request) {
+	db := handler.GetDB()
+
 	vars := mux.Vars(r)
 	id := vars["id"]
 
-	request := UpdateToDoRequest{}
+	request := handler.UpdateTaskRequest{}
 	err := json.NewDecoder(r.Body).Decode(&request)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
@@ -21,7 +24,7 @@ func UpdateToDoHandler(w http.ResponseWriter, r *http.Request) {
 
 	task := schemas.Task{}
 	if err := db.First(&task, id).Error; err != nil {
-		http.Error(w, "Record not found", http.StatusNotFound)
+		http.Error(w, "Task not found", http.StatusNotFound)
 		return
 	}
 
@@ -31,6 +34,10 @@ func UpdateToDoHandler(w http.ResponseWriter, r *http.Request) {
 	if request.Description != "" {
 		task.Description = request.Description
 	}
+	if request.DueDate != nil {
+		task.DueDate = request.DueDate
+	}
+	task.Completed = request.Completed
 
 	if err := db.Save(&task).Error; err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -38,6 +45,6 @@ func UpdateToDoHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	w.WriteHeader(http.StatusOK)
-	json.NewEncoder(w).Encode(map[string]string{"message": "ToDo updated successfully"})
+	json.NewEncoder(w).Encode(map[string]string{"message": "Task updated successfully"})
 
 }

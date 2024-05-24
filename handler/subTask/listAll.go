@@ -1,26 +1,29 @@
-package handler
+package subTask
 
 import (
 	"encoding/json"
 	"log"
 	"net/http"
 
+	"github.com/cairomedeiros/todo-list/handler"
 	"github.com/cairomedeiros/todo-list/schemas"
 )
 
 func ListAllHandler(w http.ResponseWriter, r *http.Request) {
-	var tasks []schemas.Task
+	db := handler.GetDB()
 
-	result := db.Find(&tasks)
+	var subTasks []schemas.SubTask
+
+	result := db.Find(&subTasks)
 
 	if result.Error != nil {
 		http.Error(w, result.Error.Error(), http.StatusInternalServerError)
 	}
 
-	log.Printf("%d records found.\n", result.RowsAffected)
+	log.Printf("%d SubTasks found.\n", result.RowsAffected)
 
 	w.WriteHeader(http.StatusOK)
-	if err := json.NewEncoder(w).Encode(tasks); err != nil {
+	if err := json.NewEncoder(w).Encode(subTasks); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
 }

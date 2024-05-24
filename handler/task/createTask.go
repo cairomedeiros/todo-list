@@ -1,14 +1,17 @@
-package handler
+package task
 
 import (
 	"encoding/json"
 	"net/http"
 
+	"github.com/cairomedeiros/todo-list/handler"
 	"github.com/cairomedeiros/todo-list/schemas"
 )
 
-func CreateToDoHandler(w http.ResponseWriter, r *http.Request) {
-	request := CreateToDoRequest{}
+func CreateTaskHandler(w http.ResponseWriter, r *http.Request) {
+	db := handler.GetDB()
+
+	request := handler.CreateTaskRequest{}
 
 	err := json.NewDecoder(r.Body).Decode(&request)
 	if err != nil {
@@ -19,6 +22,8 @@ func CreateToDoHandler(w http.ResponseWriter, r *http.Request) {
 	task := schemas.Task{
 		Title:       request.Title,
 		Description: request.Description,
+		DueDate:     request.DueDate,
+		Completed:   request.Completed,
 	}
 	if err := db.Create(&task).Error; err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -26,6 +31,6 @@ func CreateToDoHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	w.WriteHeader(http.StatusOK)
-	json.NewEncoder(w).Encode(map[string]string{"message": "Data received and saved successfully"})
+	json.NewEncoder(w).Encode(map[string]string{"message": "Task received and saved successfully"})
 
 }

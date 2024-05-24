@@ -16,7 +16,7 @@ func InitializePostgreSQL() (*gorm.DB, error) {
 		fmt.Println(err)
 		return nil, err
 	}
-	err = db.AutoMigrate(&schemas.Task{})
+	err = db.AutoMigrate(&schemas.Task{}, &schemas.SubTask{})
 	if err != nil {
 		fmt.Println("Error during migration:", err)
 		return nil, err

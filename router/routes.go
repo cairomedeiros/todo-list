@@ -2,6 +2,8 @@ package router
 
 import (
 	"github.com/cairomedeiros/todo-list/handler"
+	"github.com/cairomedeiros/todo-list/handler/subTask"
+	"github.com/cairomedeiros/todo-list/handler/task"
 	"github.com/gorilla/mux"
 )
 
@@ -9,9 +11,17 @@ func initializeRoutes(r *mux.Router) {
 	//Initialize Handler
 	handler.InitializeHandler()
 
-	r.HandleFunc("/createtodo", handler.CreateToDoHandler).Methods("POST") //POST
-	r.HandleFunc("/listAll", handler.ListAllHandler).Methods("GET")        //GET
-	r.HandleFunc("/{id}", handler.GetByIdHandler).Methods("GET")           //GET
-	r.HandleFunc("/{id}", handler.UpdateToDoHandler).Methods("PUT")        //PUT
-	r.HandleFunc("/{id}", handler.DeleteToDoHandler).Methods("DELETE")     //DELETE
+	//tasks
+	r.HandleFunc("/task/create", task.CreateTaskHandler).Methods("POST") //POST
+	r.HandleFunc("/task/listAll", task.ListAllHandler).Methods("GET")    //GET
+	r.HandleFunc("/task/{id}", task.GetByIdHandler).Methods("GET")       //GET
+	r.HandleFunc("/task/{id}", task.UpdateTaskHandler).Methods("PUT")    //PUT
+	r.HandleFunc("/task/{id}", task.DeleteTaskHandler).Methods("DELETE") //DELETE
+
+	//subTask
+	r.HandleFunc("/subTask/create", subTask.CreateSubTaskHandler).Methods("POST") //POST
+	r.HandleFunc("/subTask/{id}", subTask.UpdateSubTaskHandler).Methods("PUT")    //PUT
+	r.HandleFunc("/subTask/{id}", subTask.DeleteSubTaskHandler).Methods("DELETE") //DELETE
+	r.HandleFunc("/subTask/listAll", subTask.ListAllHandler).Methods("GET")       //GET
+	r.HandleFunc("/subTask/{id}", subTask.GetByIdHandler).Methods("GET")          //GET
 }
