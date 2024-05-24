@@ -15,7 +15,7 @@ func UpdateTaskHandler(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	id := vars["id"]
 
-	request := handler.UpdateToDoRequest{}
+	request := handler.UpdateTaskRequest{}
 	err := json.NewDecoder(r.Body).Decode(&request)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
@@ -37,6 +37,7 @@ func UpdateTaskHandler(w http.ResponseWriter, r *http.Request) {
 	if request.DueDate != nil {
 		task.DueDate = request.DueDate
 	}
+	task.Completed = request.Completed
 
 	if err := db.Save(&task).Error; err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)

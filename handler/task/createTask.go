@@ -11,7 +11,7 @@ import (
 func CreateTaskHandler(w http.ResponseWriter, r *http.Request) {
 	db := handler.GetDB()
 
-	request := handler.CreateToDoRequest{}
+	request := handler.CreateTaskRequest{}
 
 	err := json.NewDecoder(r.Body).Decode(&request)
 	if err != nil {
