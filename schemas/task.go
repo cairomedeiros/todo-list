@@ -11,4 +11,6 @@ type Task struct {
 	Title       string
 	Description string
 	DueDate     *time.Time
+	Completed   bool
+	SubTasks    []SubTask `gorm:"foreignKey:TaskID"`
 }
