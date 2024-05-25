@@ -21,6 +21,11 @@ func DeleteTaskHandler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
+
+	//delete all subtasks by task id before delete task
+	subTask := schemas.SubTask{}
+	db.Where("task_id = ?", id).Unscoped().Delete(&subTask)
+
 	db.Unscoped().Delete(&task, id)
 
 	w.WriteHeader(http.StatusOK)
