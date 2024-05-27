@@ -9,6 +9,16 @@ import (
 	"github.com/gorilla/mux"
 )
 
+// @Summary Update task
+// @Description Update task
+// @Tags Tasks
+// @Accept  json
+// @Produce  json
+// @Param Request body handler.UpdateTaskRequest{} true "Request Body"
+// @Success 200 {object} handler.UpdateTaskRequest{}
+// @Failure 400 {object} handler.UpdateTaskRequest{}
+// @Failure 500 {object} handler.UpdateTaskRequest{}
+// @Router /task/{id} [put]
 func UpdateTaskHandler(w http.ResponseWriter, r *http.Request) {
 	db := handler.GetDB()
 

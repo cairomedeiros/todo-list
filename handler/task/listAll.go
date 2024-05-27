@@ -9,6 +9,15 @@ import (
 	"github.com/cairomedeiros/todo-list/schemas"
 )
 
+// @Summary List all tasks
+// @Description List all tasks
+// @Tags Tasks
+// @Accept  json
+// @Produce  json
+// @Success 200 {object} handler.CreateTaskRequest{}
+// @Failure 400 {object} handler.CreateTaskRequest{}
+// @Failure 500 {object} handler.CreateTaskRequest{}
+// @Router /task/listAll [get]
 func ListAllHandler(w http.ResponseWriter, r *http.Request) {
 	db := handler.GetDB()
 

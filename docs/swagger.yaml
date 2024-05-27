@@ -1,0 +1,168 @@
+definitions:
+  handler.CreateTaskRequest:
+    properties:
+      completed:
+        type: boolean
+      description:
+        type: string
+      dueDate:
+        type: string
+      id:
+        type: integer
+      title:
+        type: string
+    type: object
+  handler.UpdateTaskRequest:
+    properties:
+      completed:
+        type: boolean
+      description:
+        type: string
+      dueDate:
+        type: string
+      title:
+        type: string
+    type: object
+info:
+  contact: {}
+paths:
+  /task/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete task
+      parameters:
+      - description: Task identification
+        in: query
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handler.CreateTaskRequest'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.CreateTaskRequest'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.CreateTaskRequest'
+      summary: Delete task
+      tags:
+      - Tasks
+    get:
+      consumes:
+      - application/json
+      description: Get task by id
+      parameters:
+      - description: Task identification
+        in: query
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handler.CreateTaskRequest'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.CreateTaskRequest'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.CreateTaskRequest'
+      summary: Get task by id
+      tags:
+      - Tasks
+    put:
+      consumes:
+      - application/json
+      description: Update task
+      parameters:
+      - description: Request Body
+        in: body
+        name: Request
+        required: true
+        schema:
+          $ref: '#/definitions/handler.UpdateTaskRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handler.UpdateTaskRequest'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.UpdateTaskRequest'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.UpdateTaskRequest'
+      summary: Update task
+      tags:
+      - Tasks
+  /task/create:
+    post:
+      consumes:
+      - application/json
+      description: Create new task
+      parameters:
+      - description: Request Body
+        in: body
+        name: Request
+        required: true
+        schema:
+          $ref: '#/definitions/handler.CreateTaskRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handler.CreateTaskRequest'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.CreateTaskRequest'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.CreateTaskRequest'
+      summary: Create new task
+      tags:
+      - Tasks
+  /task/listAll:
+    get:
+      consumes:
+      - application/json
+      description: Get task by id
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handler.CreateTaskRequest'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.CreateTaskRequest'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.CreateTaskRequest'
+      summary: Get task by id
+      tags:
+      - Tasks
+swagger: "2.0"

@@ -9,6 +9,16 @@ import (
 	"github.com/gorilla/mux"
 )
 
+// @Summary Delete task
+// @Description Delete task
+// @Tags Tasks
+// @Accept  json
+// @Produce  json
+// @Param id query string true "Task identification"
+// @Success 200 {object} handler.CreateTaskRequest{}
+// @Failure 400 {object} handler.CreateTaskRequest{}
+// @Failure 500 {object} handler.CreateTaskRequest{}
+// @Router /task/{id} [delete]
 func DeleteTaskHandler(w http.ResponseWriter, r *http.Request) {
 	db := handler.GetDB()
 
