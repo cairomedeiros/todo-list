@@ -8,6 +8,16 @@ import (
 	"github.com/cairomedeiros/todo-list/schemas"
 )
 
+// @Summary Create new task
+// @Description Create new task
+// @Tags Tasks
+// @Accept  json
+// @Produce  json
+// @Param Request body handler.CreateTaskRequest{} true "Request Body"
+// @Success 200 {object} handler.CreateTaskRequest{}
+// @Failure 400 {object} handler.CreateTaskRequest{}
+// @Failure 500 {object} handler.CreateTaskRequest{}
+// @Router /task/create [post]
 func CreateTaskHandler(w http.ResponseWriter, r *http.Request) {
 	db := handler.GetDB()
 
