@@ -10,10 +10,6 @@ import (
 	httpSwagger "github.com/swaggo/http-swagger"
 )
 
-// @title Clean GO API Docs
-// @license.url http://www.apache.org/licenses/LICENSE-2.0.html
-// @host localhost:port
-// @BasePath /
 func initializeRoutes(r *mux.Router) {
 	//Initialize Handler
 	handler.InitializeHandler()

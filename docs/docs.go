@@ -17,7 +17,7 @@ const docTemplate = `{
     "paths": {
         "/task/create": {
             "post": {
-                "description": "Create new task",
+                "description": "Create a new Task",
                 "consumes": [
                     "application/json"
                 ],
@@ -27,13 +27,12 @@ const docTemplate = `{
                 "tags": [
                     "Tasks"
                 ],
-                "summary": "Create new task",
+                "summary": "Create Task",
                 "parameters": [
                     {
-                        "description": "Request Body",
-                        "name": "Request",
+                        "description": "Request body",
+                        "name": "request",
                         "in": "body",
-                        "required": true,
                         "schema": {
                             "$ref": "#/definitions/handler.CreateTaskRequest"
                         }
@@ -43,19 +42,19 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/handler.CreateTaskRequest"
+                            "$ref": "#/definitions/schemas.TaskResponse"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/handler.CreateTaskRequest"
+                            "$ref": "#/definitions/handler.ErrorResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/handler.CreateTaskRequest"
+                            "$ref": "#/definitions/handler.ErrorResponse"
                         }
                     }
                 }
@@ -63,7 +62,7 @@ const docTemplate = `{
         },
         "/task/listAll": {
             "get": {
-                "description": "Get task by id",
+                "description": "List all Tasks",
                 "consumes": [
                     "application/json"
                 ],
@@ -73,24 +72,21 @@ const docTemplate = `{
                 "tags": [
                     "Tasks"
                 ],
-                "summary": "Get task by id",
+                "summary": "List Tasks",
                 "responses": {
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/handler.CreateTaskRequest"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/handler.CreateTaskRequest"
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/handler.ListTasksResponse"
+                            }
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/handler.CreateTaskRequest"
+                            "$ref": "#/definitions/handler.ErrorResponse"
                         }
                     }
                 }
@@ -98,7 +94,7 @@ const docTemplate = `{
         },
         "/task/{id}": {
             "get": {
-                "description": "Get task by id",
+                "description": "Show a Task",
                 "consumes": [
                     "application/json"
                 ],
@@ -108,13 +104,13 @@ const docTemplate = `{
                 "tags": [
                     "Tasks"
                 ],
-                "summary": "Get task by id",
+                "summary": "Show Task",
                 "parameters": [
                     {
                         "type": "string",
                         "description": "Task identification",
                         "name": "id",
-                        "in": "query",
+                        "in": "path",
                         "required": true
                     }
                 ],
@@ -122,25 +118,25 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/handler.CreateTaskRequest"
+                            "$ref": "#/definitions/handler.GetTaskByIdResponse"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/handler.CreateTaskRequest"
+                            "$ref": "#/definitions/handler.ErrorResponse"
                         }
                     },
-                    "500": {
-                        "description": "Internal Server Error",
+                    "404": {
+                        "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/handler.CreateTaskRequest"
+                            "$ref": "#/definitions/handler.ErrorResponse"
                         }
                     }
                 }
             },
             "put": {
-                "description": "Update task",
+                "description": "Update a Task",
                 "consumes": [
                     "application/json"
                 ],
@@ -150,11 +146,18 @@ const docTemplate = `{
                 "tags": [
                     "Tasks"
                 ],
-                "summary": "Update task",
+                "summary": "Update Task",
                 "parameters": [
                     {
-                        "description": "Request Body",
-                        "name": "Request",
+                        "type": "string",
+                        "description": "Task Identification",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Task data to Update",
+                        "name": "task",
                         "in": "body",
                         "required": true,
                         "schema": {
@@ -166,25 +169,31 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/handler.UpdateTaskRequest"
+                            "$ref": "#/definitions/handler.UpdateTaskResponse"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/handler.UpdateTaskRequest"
+                            "$ref": "#/definitions/handler.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/handler.ErrorResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/handler.UpdateTaskRequest"
+                            "$ref": "#/definitions/handler.ErrorResponse"
                         }
                     }
                 }
             },
             "delete": {
-                "description": "Delete task",
+                "description": "Delete Task",
                 "consumes": [
                     "application/json"
                 ],
@@ -194,13 +203,13 @@ const docTemplate = `{
                 "tags": [
                     "Tasks"
                 ],
-                "summary": "Delete task",
+                "summary": "Delete Task",
                 "parameters": [
                     {
                         "type": "string",
                         "description": "Task identification",
                         "name": "id",
-                        "in": "query",
+                        "in": "path",
                         "required": true
                     }
                 ],
@@ -208,19 +217,19 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/handler.CreateTaskRequest"
+                            "$ref": "#/definitions/handler.DeleteTaskResponse"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/handler.CreateTaskRequest"
+                            "$ref": "#/definitions/handler.ErrorResponse"
                         }
                     },
-                    "500": {
-                        "description": "Internal Server Error",
+                    "404": {
+                        "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/handler.CreateTaskRequest"
+                            "$ref": "#/definitions/handler.ErrorResponse"
                         }
                     }
                 }
@@ -240,10 +249,54 @@ const docTemplate = `{
                 "dueDate": {
                     "type": "string"
                 },
-                "id": {
-                    "type": "integer"
-                },
                 "title": {
+                    "type": "string"
+                }
+            }
+        },
+        "handler.DeleteTaskResponse": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/schemas.TaskResponse"
+                },
+                "message": {
+                    "type": "string"
+                }
+            }
+        },
+        "handler.ErrorResponse": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string"
+                },
+                "type": {
+                    "type": "string"
+                }
+            }
+        },
+        "handler.GetTaskByIdResponse": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/schemas.TaskResponse"
+                },
+                "message": {
+                    "type": "string"
+                }
+            }
+        },
+        "handler.ListTasksResponse": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/schemas.TaskResponse"
+                    }
+                },
+                "message": {
                     "type": "string"
                 }
             }
@@ -261,6 +314,46 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "title": {
+                    "type": "string"
+                }
+            }
+        },
+        "handler.UpdateTaskResponse": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/schemas.TaskResponse"
+                },
+                "message": {
+                    "type": "string"
+                }
+            }
+        },
+        "schemas.TaskResponse": {
+            "type": "object",
+            "properties": {
+                "completed": {
+                    "type": "boolean"
+                },
+                "createdAt": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "deteledAt": {
+                    "type": "string"
+                },
+                "dueDate": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "title": {
+                    "type": "string"
+                },
+                "updatedAt": {
                     "type": "string"
                 }
             }

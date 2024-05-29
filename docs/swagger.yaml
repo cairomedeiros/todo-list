@@ -7,9 +7,37 @@ definitions:
         type: string
       dueDate:
         type: string
-      id:
-        type: integer
       title:
+        type: string
+    type: object
+  handler.DeleteTaskResponse:
+    properties:
+      data:
+        $ref: '#/definitions/schemas.TaskResponse'
+      message:
+        type: string
+    type: object
+  handler.ErrorResponse:
+    properties:
+      message:
+        type: string
+      type:
+        type: string
+    type: object
+  handler.GetTaskByIdResponse:
+    properties:
+      data:
+        $ref: '#/definitions/schemas.TaskResponse'
+      message:
+        type: string
+    type: object
+  handler.ListTasksResponse:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/schemas.TaskResponse'
+        type: array
+      message:
         type: string
     type: object
   handler.UpdateTaskRequest:
@@ -23,6 +51,32 @@ definitions:
       title:
         type: string
     type: object
+  handler.UpdateTaskResponse:
+    properties:
+      data:
+        $ref: '#/definitions/schemas.TaskResponse'
+      message:
+        type: string
+    type: object
+  schemas.TaskResponse:
+    properties:
+      completed:
+        type: boolean
+      createdAt:
+        type: string
+      description:
+        type: string
+      deteledAt:
+        type: string
+      dueDate:
+        type: string
+      id:
+        type: integer
+      title:
+        type: string
+      updatedAt:
+        type: string
+    type: object
 info:
   contact: {}
 paths:
@@ -30,10 +84,10 @@ paths:
     delete:
       consumes:
       - application/json
-      description: Delete task
+      description: Delete Task
       parameters:
       - description: Task identification
-        in: query
+        in: path
         name: id
         required: true
         type: string
@@ -43,25 +97,25 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/handler.CreateTaskRequest'
+            $ref: '#/definitions/handler.DeleteTaskResponse'
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/handler.CreateTaskRequest'
-        "500":
-          description: Internal Server Error
+            $ref: '#/definitions/handler.ErrorResponse'
+        "404":
+          description: Not Found
           schema:
-            $ref: '#/definitions/handler.CreateTaskRequest'
-      summary: Delete task
+            $ref: '#/definitions/handler.ErrorResponse'
+      summary: Delete Task
       tags:
       - Tasks
     get:
       consumes:
       - application/json
-      description: Get task by id
+      description: Show a Task
       parameters:
       - description: Task identification
-        in: query
+        in: path
         name: id
         required: true
         type: string
@@ -71,26 +125,31 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/handler.CreateTaskRequest'
+            $ref: '#/definitions/handler.GetTaskByIdResponse'
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/handler.CreateTaskRequest'
-        "500":
-          description: Internal Server Error
+            $ref: '#/definitions/handler.ErrorResponse'
+        "404":
+          description: Not Found
           schema:
-            $ref: '#/definitions/handler.CreateTaskRequest'
-      summary: Get task by id
+            $ref: '#/definitions/handler.ErrorResponse'
+      summary: Show Task
       tags:
       - Tasks
     put:
       consumes:
       - application/json
-      description: Update task
+      description: Update a Task
       parameters:
-      - description: Request Body
+      - description: Task Identification
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Task data to Update
         in: body
-        name: Request
+        name: task
         required: true
         schema:
           $ref: '#/definitions/handler.UpdateTaskRequest'
@@ -100,28 +159,31 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/handler.UpdateTaskRequest'
+            $ref: '#/definitions/handler.UpdateTaskResponse'
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/handler.UpdateTaskRequest'
+            $ref: '#/definitions/handler.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/handler.ErrorResponse'
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/handler.UpdateTaskRequest'
-      summary: Update task
+            $ref: '#/definitions/handler.ErrorResponse'
+      summary: Update Task
       tags:
       - Tasks
   /task/create:
     post:
       consumes:
       - application/json
-      description: Create new task
+      description: Create a new Task
       parameters:
-      - description: Request Body
+      - description: Request body
         in: body
-        name: Request
-        required: true
+        name: request
         schema:
           $ref: '#/definitions/handler.CreateTaskRequest'
       produces:
@@ -130,39 +192,37 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/handler.CreateTaskRequest'
+            $ref: '#/definitions/schemas.TaskResponse'
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/handler.CreateTaskRequest'
+            $ref: '#/definitions/handler.ErrorResponse'
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/handler.CreateTaskRequest'
-      summary: Create new task
+            $ref: '#/definitions/handler.ErrorResponse'
+      summary: Create Task
       tags:
       - Tasks
   /task/listAll:
     get:
       consumes:
       - application/json
-      description: Get task by id
+      description: List all Tasks
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/handler.CreateTaskRequest'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/handler.CreateTaskRequest'
+            items:
+              $ref: '#/definitions/handler.ListTasksResponse'
+            type: array
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/handler.CreateTaskRequest'
-      summary: Get task by id
+            $ref: '#/definitions/handler.ErrorResponse'
+      summary: List Tasks
       tags:
       - Tasks
 swagger: "2.0"

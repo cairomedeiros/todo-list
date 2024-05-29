@@ -9,14 +9,15 @@ import (
 	"github.com/cairomedeiros/todo-list/schemas"
 )
 
-// @Summary List all tasks
-// @Description List all tasks
+// @BasePath /api/v1
+
+// @Summary List Tasks
+// @Description List all Tasks
 // @Tags Tasks
-// @Accept  json
-// @Produce  json
-// @Success 200 {object} handler.CreateTaskRequest{}
-// @Failure 400 {object} handler.CreateTaskRequest{}
-// @Failure 500 {object} handler.CreateTaskRequest{}
+// @Accept json
+// @Produce json
+// @Success 200 {array} handler.ListTasksResponse
+// @Failure 500 {object} handler.ErrorResponse
 // @Router /task/listAll [get]
 func ListAllHandler(w http.ResponseWriter, r *http.Request) {
 	db := handler.GetDB()
@@ -27,12 +28,13 @@ func ListAllHandler(w http.ResponseWriter, r *http.Request) {
 
 	if result.Error != nil {
 		http.Error(w, result.Error.Error(), http.StatusInternalServerError)
+		handler.SendError(w, http.StatusInternalServerError, result.Error.Error())
 	}
 
 	log.Printf("%d tasks found.\n", result.RowsAffected)
 
 	w.WriteHeader(http.StatusOK)
 	if err := json.NewEncoder(w).Encode(tasks); err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+		handler.SendError(w, http.StatusBadRequest, err.Error())
 	}
 }

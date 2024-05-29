@@ -11,15 +11,17 @@ import (
 	"gorm.io/gorm"
 )
 
-// @Summary Get task by id
-// @Description Get task by id
+// @BasePath /api/v1
+
+// @Summary Show Task
+// @Description Show a Task
 // @Tags Tasks
-// @Accept  json
-// @Produce  json
-// @Param id query string true "Task identification"
-// @Success 200 {object} handler.CreateTaskRequest{}
-// @Failure 400 {object} handler.CreateTaskRequest{}
-// @Failure 500 {object} handler.CreateTaskRequest{}
+// @Accept json
+// @Produce json
+// @Param id path string true "Task identification"
+// @Success 200 {object} handler.GetTaskByIdResponse
+// @Failure 400 {object} handler.ErrorResponse
+// @Failure 404 {object} handler.ErrorResponse
 // @Router /task/{id} [get]
 func GetByIdHandler(w http.ResponseWriter, r *http.Request) {
 	db := handler.GetDB()
@@ -27,15 +29,20 @@ func GetByIdHandler(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	id := vars["id"]
 
+	if id == "" {
+		handler.SendError(w, http.StatusBadRequest, handler.ErrParamIsRequired("id", "queryParameter").Error())
+		return
+	}
+
 	task := schemas.Task{}
 
 	if err := db.Preload("SubTasks").First(&task, id).Error; err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
-			http.Error(w, "Task not found", http.StatusNotFound)
+			handler.SendError(w, http.StatusNotFound, "Task not found")
 			return
 		}
 
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+		handler.SendError(w, http.StatusBadRequest, err.Error())
 		return
 	}
 	w.WriteHeader(http.StatusOK)

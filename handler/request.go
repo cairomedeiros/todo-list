@@ -1,9 +1,15 @@
 package handler
 
-import "time"
+import (
+	"fmt"
+	"time"
+)
+
+func ErrParamIsRequired(name, typ string) error {
+	return fmt.Errorf("param: %s (type: %s) is required", name, typ)
+}
 
 type CreateTaskRequest struct {
-	Id          uint       `json:"id" gorm:"primaryKey"`
 	Title       string     `json:"title"`
 	Description string     `json:"description"`
 	DueDate     *time.Time `json:"dueDate"`
