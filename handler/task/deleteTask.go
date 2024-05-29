@@ -2,6 +2,7 @@ package task
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
 
 	"github.com/cairomedeiros/todo-list/handler"
@@ -9,15 +10,17 @@ import (
 	"github.com/gorilla/mux"
 )
 
-// @Summary Delete task
-// @Description Delete task
+// @BasePath /api/v1
+
+// @Summary Delete Task
+// @Description Delete Task
 // @Tags Tasks
-// @Accept  json
-// @Produce  json
-// @Param id query string true "Task identification"
-// @Success 200 {object} handler.CreateTaskRequest{}
-// @Failure 400 {object} handler.CreateTaskRequest{}
-// @Failure 500 {object} handler.CreateTaskRequest{}
+// @Accept json
+// @Produce json
+// @Param id path string true "Task identification"
+// @Success 200 {object} handler.DeleteTaskResponse
+// @failure 400 {object} handler.ErrorResponse
+// @failure 404 {object} handler.ErrorResponse
 // @Router /task/{id} [delete]
 func DeleteTaskHandler(w http.ResponseWriter, r *http.Request) {
 	db := handler.GetDB()
@@ -25,10 +28,15 @@ func DeleteTaskHandler(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	id := vars["id"]
 
+	if id == "" {
+		handler.SendError(w, http.StatusBadRequest, handler.ErrParamIsRequired("id", "pathParameter").Error())
+		return
+	}
+
 	task := schemas.Task{}
 
 	if err := db.Find(&task, id).Error; err != nil {
-		http.Error(w, err.Error(), http.StatusBadRequest)
+		handler.SendError(w, http.StatusNotFound, fmt.Sprintf("Task with id: %s not found", id))
 		return
 	}
 

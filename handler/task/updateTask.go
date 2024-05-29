@@ -9,15 +9,19 @@ import (
 	"github.com/gorilla/mux"
 )
 
-// @Summary Update task
-// @Description Update task
+// @BasePath /api/v1
+
+// @Summary Update Task
+// @Description Update a Task
 // @Tags Tasks
-// @Accept  json
-// @Produce  json
-// @Param Request body handler.UpdateTaskRequest{} true "Request Body"
-// @Success 200 {object} handler.UpdateTaskRequest{}
-// @Failure 400 {object} handler.UpdateTaskRequest{}
-// @Failure 500 {object} handler.UpdateTaskRequest{}
+// @Accept json
+// @Produce json
+// @Param id path string true "Task Identification"
+// @Param task body handler.UpdateTaskRequest true "Task data to Update"
+// @Success 200 {object} handler.UpdateTaskResponse
+// @Failure 400 {object} handler.ErrorResponse
+// @Failure 404 {object} handler.ErrorResponse
+// @Failure 500 {object} handler.ErrorResponse
 // @Router /task/{id} [put]
 func UpdateTaskHandler(w http.ResponseWriter, r *http.Request) {
 	db := handler.GetDB()
@@ -29,12 +33,13 @@ func UpdateTaskHandler(w http.ResponseWriter, r *http.Request) {
 	err := json.NewDecoder(r.Body).Decode(&request)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
+		handler.SendError(w, http.StatusBadRequest, err.Error())
 		return
 	}
 
 	task := schemas.Task{}
 	if err := db.First(&task, id).Error; err != nil {
-		http.Error(w, "Task not found", http.StatusNotFound)
+		handler.SendError(w, http.StatusNotFound, "Task not found")
 		return
 	}
 
@@ -51,6 +56,7 @@ func UpdateTaskHandler(w http.ResponseWriter, r *http.Request) {
 
 	if err := db.Save(&task).Error; err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
+		handler.SendError(w, http.StatusInternalServerError, err.Error())
 		return
 	}
 

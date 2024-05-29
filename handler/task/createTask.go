@@ -8,15 +8,17 @@ import (
 	"github.com/cairomedeiros/todo-list/schemas"
 )
 
-// @Summary Create new task
-// @Description Create new task
+// @BasePath /api/v1
+
+// @Summary Create Task
+// @Description Create a new Task
 // @Tags Tasks
-// @Accept  json
-// @Produce  json
-// @Param Request body handler.CreateTaskRequest{} true "Request Body"
-// @Success 200 {object} handler.CreateTaskRequest{}
-// @Failure 400 {object} handler.CreateTaskRequest{}
-// @Failure 500 {object} handler.CreateTaskRequest{}
+// @Accept json
+// @Produce json
+// @Param request body handler.CreateTaskRequest false "Request body"
+// @Success 200 {object} schemas.TaskResponse
+// @Failure 400 {object} handler.ErrorResponse
+// @Failure 500 {object} handler.ErrorResponse
 // @Router /task/create [post]
 func CreateTaskHandler(w http.ResponseWriter, r *http.Request) {
 	db := handler.GetDB()
@@ -25,7 +27,7 @@ func CreateTaskHandler(w http.ResponseWriter, r *http.Request) {
 
 	err := json.NewDecoder(r.Body).Decode(&request)
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusBadRequest)
+		handler.SendError(w, http.StatusBadRequest, err.Error())
 		return
 	}
 
@@ -36,7 +38,7 @@ func CreateTaskHandler(w http.ResponseWriter, r *http.Request) {
 		Completed:   request.Completed,
 	}
 	if err := db.Create(&task).Error; err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+		handler.SendError(w, http.StatusInternalServerError, err.Error())
 		return
 	}
 
