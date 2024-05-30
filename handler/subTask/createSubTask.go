@@ -16,7 +16,7 @@ import (
 // @Accept json
 // @Produce json
 // @Param request body handler.CreateSubTaskRequest false "Request body"
-// @Success 200 {object} handler.SubTaskResponse
+// @Success 200 {object} handler.CreateSubTaskResponse
 // @Failure 400 {object} handler.ErrorResponse
 // @Failure 500 {object} handler.ErrorResponse
 // @Router /subTask/create [post]

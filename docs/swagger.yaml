@@ -1,4 +1,20 @@
 definitions:
+  handler.CreateSubTaskRequest:
+    properties:
+      completed:
+        type: boolean
+      name:
+        type: string
+      taskId:
+        type: integer
+    type: object
+  handler.CreateSubTaskResponse:
+    properties:
+      data:
+        $ref: '#/definitions/schemas.SubTaskResponse'
+      message:
+        type: string
+    type: object
   handler.CreateTaskRequest:
     properties:
       completed:
@@ -8,6 +24,20 @@ definitions:
       dueDate:
         type: string
       title:
+        type: string
+    type: object
+  handler.CreateTaskResponse:
+    properties:
+      data:
+        $ref: '#/definitions/schemas.TaskResponse'
+      message:
+        type: string
+    type: object
+  handler.DeleteSubTaskResponse:
+    properties:
+      data:
+        $ref: '#/definitions/schemas.SubTaskResponse'
+      message:
         type: string
     type: object
   handler.DeleteTaskResponse:
@@ -24,10 +54,26 @@ definitions:
       type:
         type: string
     type: object
+  handler.GetSubTaskByIdResponse:
+    properties:
+      data:
+        $ref: '#/definitions/schemas.SubTaskResponse'
+      message:
+        type: string
+    type: object
   handler.GetTaskByIdResponse:
     properties:
       data:
         $ref: '#/definitions/schemas.TaskResponse'
+      message:
+        type: string
+    type: object
+  handler.ListSubTasksResponse:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/schemas.SubTaskResponse'
+        type: array
       message:
         type: string
     type: object
@@ -37,6 +83,22 @@ definitions:
         items:
           $ref: '#/definitions/schemas.TaskResponse'
         type: array
+      message:
+        type: string
+    type: object
+  handler.UpdateSubTaskRequest:
+    properties:
+      completed:
+        type: boolean
+      name:
+        type: string
+      taskId:
+        type: integer
+    type: object
+  handler.UpdateSubTaskResponse:
+    properties:
+      data:
+        $ref: '#/definitions/schemas.SubTaskResponse'
       message:
         type: string
     type: object
@@ -56,6 +118,23 @@ definitions:
       data:
         $ref: '#/definitions/schemas.TaskResponse'
       message:
+        type: string
+    type: object
+  schemas.SubTaskResponse:
+    properties:
+      completed:
+        type: boolean
+      createdAt:
+        type: string
+      deteledAt:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+      taskId:
+        type: integer
+      updatedAt:
         type: string
     type: object
   schemas.TaskResponse:
@@ -80,6 +159,151 @@ definitions:
 info:
   contact: {}
 paths:
+  /subTask/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete SubTask
+      parameters:
+      - description: SubTask identification
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handler.DeleteSubTaskResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/handler.ErrorResponse'
+      summary: Delete SubTask
+      tags:
+      - SubTasks
+    get:
+      consumes:
+      - application/json
+      description: Show a SubTask
+      parameters:
+      - description: SubTask identification
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handler.GetSubTaskByIdResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/handler.ErrorResponse'
+      summary: Show SubTask
+      tags:
+      - SubTasks
+    put:
+      consumes:
+      - application/json
+      description: Update a SubTask
+      parameters:
+      - description: SubTask Identification
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: SubTask data to Update
+        in: body
+        name: task
+        required: true
+        schema:
+          $ref: '#/definitions/handler.UpdateSubTaskRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handler.UpdateSubTaskResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/handler.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.ErrorResponse'
+      summary: Update SubTask
+      tags:
+      - SubTasks
+  /subTask/create:
+    post:
+      consumes:
+      - application/json
+      description: Create a new SubTask
+      parameters:
+      - description: Request body
+        in: body
+        name: request
+        schema:
+          $ref: '#/definitions/handler.CreateSubTaskRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handler.CreateSubTaskResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.ErrorResponse'
+      summary: Create SubTask
+      tags:
+      - SubTasks
+  /subTask/listAll:
+    get:
+      consumes:
+      - application/json
+      description: List all SubTasks
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/handler.ListSubTasksResponse'
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.ErrorResponse'
+      summary: List SubTasks
+      tags:
+      - SubTasks
   /task/{id}:
     delete:
       consumes:
@@ -192,7 +416,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/schemas.TaskResponse'
+            $ref: '#/definitions/handler.CreateTaskResponse'
         "400":
           description: Bad Request
           schema:
