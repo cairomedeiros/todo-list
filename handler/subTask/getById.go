@@ -1,7 +1,6 @@
 package subTask
 
 import (
-	"encoding/json"
 	"errors"
 	"net/http"
 
@@ -45,6 +44,6 @@ func GetByIdHandler(w http.ResponseWriter, r *http.Request) {
 		handler.SendError(w, http.StatusBadRequest, err.Error())
 		return
 	}
-	w.WriteHeader(http.StatusOK)
-	json.NewEncoder(w).Encode(subTask)
+
+	handler.SendSuccess(w, "get-subtask-by-id", subTask)
 }

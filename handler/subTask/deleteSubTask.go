@@ -1,7 +1,6 @@
 package subTask
 
 import (
-	"encoding/json"
 	"fmt"
 	"net/http"
 
@@ -41,6 +40,5 @@ func DeleteSubTaskHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	db.Unscoped().Delete(&subTask, id)
 
-	w.WriteHeader(http.StatusOK)
-	json.NewEncoder(w).Encode(map[string]string{"message": "SubTask deleted successfully"})
+	handler.SendSuccess(w, "delete-subtask", subTask)
 }

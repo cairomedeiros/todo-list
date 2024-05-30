@@ -1,7 +1,6 @@
 package task
 
 import (
-	"encoding/json"
 	"fmt"
 	"net/http"
 
@@ -46,6 +45,5 @@ func DeleteTaskHandler(w http.ResponseWriter, r *http.Request) {
 
 	db.Unscoped().Delete(&task, id)
 
-	w.WriteHeader(http.StatusOK)
-	json.NewEncoder(w).Encode(map[string]string{"message": "Task deleted successfully"})
+	handler.SendSuccess(w, "delete-task", task)
 }

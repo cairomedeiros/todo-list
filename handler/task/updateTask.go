@@ -58,7 +58,6 @@ func UpdateTaskHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	w.WriteHeader(http.StatusOK)
-	json.NewEncoder(w).Encode(map[string]string{"message": "Task updated successfully"})
+	handler.SendSuccess(w, "update-task", task)
 
 }

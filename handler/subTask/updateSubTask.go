@@ -55,7 +55,6 @@ func UpdateSubTaskHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	w.WriteHeader(http.StatusOK)
-	json.NewEncoder(w).Encode(map[string]string{"message": "SubTask updated successfully"})
+	handler.SendSuccess(w, "update-subtask", subTask)
 
 }

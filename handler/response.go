@@ -2,10 +2,21 @@ package handler
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
 
 	"github.com/cairomedeiros/todo-list/schemas"
 )
+
+func SendSuccess(w http.ResponseWriter, op string, data interface{}) {
+	w.Header().Set("Content-type", "application/json")
+	w.WriteHeader(http.StatusOK)
+	response := map[string]interface{}{
+		"message": fmt.Sprintf("operation from handler: %s successful", op),
+		"data":    data,
+	}
+	json.NewEncoder(w).Encode(response)
+}
 
 func SendError(w http.ResponseWriter, code int, msg string) {
 	w.Header().Set("Content-type", "application/json")

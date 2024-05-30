@@ -32,7 +32,7 @@ func ListAllHandler(w http.ResponseWriter, r *http.Request) {
 
 	log.Printf("%d tasks found.\n", result.RowsAffected)
 
-	w.WriteHeader(http.StatusOK)
+	handler.SendSuccess(w, "list-all-tasks", tasks)
 	if err := json.NewEncoder(w).Encode(tasks); err != nil {
 		handler.SendError(w, http.StatusBadRequest, err.Error())
 	}
