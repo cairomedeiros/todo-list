@@ -16,7 +16,7 @@ import (
 // @Accept json
 // @Produce json
 // @Param request body handler.CreateTaskRequest false "Request body"
-// @Success 200 {object} schemas.TaskResponse
+// @Success 200 {object} handler.CreateTaskResponse
 // @Failure 400 {object} handler.ErrorResponse
 // @Failure 500 {object} handler.ErrorResponse
 // @Router /task/create [post]

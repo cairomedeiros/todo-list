@@ -27,7 +27,6 @@ func ListAllHandler(w http.ResponseWriter, r *http.Request) {
 	result := db.Find(&tasks)
 
 	if result.Error != nil {
-		http.Error(w, result.Error.Error(), http.StatusInternalServerError)
 		handler.SendError(w, http.StatusInternalServerError, result.Error.Error())
 	}
 

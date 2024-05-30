@@ -32,7 +32,6 @@ func UpdateTaskHandler(w http.ResponseWriter, r *http.Request) {
 	request := handler.UpdateTaskRequest{}
 	err := json.NewDecoder(r.Body).Decode(&request)
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusBadRequest)
 		handler.SendError(w, http.StatusBadRequest, err.Error())
 		return
 	}
@@ -55,7 +54,6 @@ func UpdateTaskHandler(w http.ResponseWriter, r *http.Request) {
 	task.Completed = request.Completed
 
 	if err := db.Save(&task).Error; err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
 		handler.SendError(w, http.StatusInternalServerError, err.Error())
 		return
 	}
