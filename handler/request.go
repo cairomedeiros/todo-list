@@ -24,7 +24,6 @@ type UpdateTaskRequest struct {
 }
 
 type CreateSubTaskRequest struct {
-	Id        uint   `json:"id" gorm:"primaryKey"`
 	TaskID    uint   `json:"taskId"`
 	Name      string `json:"name"`
 	Completed bool   `json:"completed"`

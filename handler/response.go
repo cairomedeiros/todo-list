@@ -21,6 +21,7 @@ type ErrorResponse struct {
 	Message string `json:"message"`
 }
 
+// task response
 type CreateTaskResponse struct {
 	Message string               `json:"message"`
 	Data    schemas.TaskResponse `json:"data"`
@@ -44,4 +45,30 @@ type GetTaskByIdResponse struct {
 type ListTasksResponse struct {
 	Message string                 `json:"message"`
 	Data    []schemas.TaskResponse `json:"data"`
+}
+
+// subtask response
+type CreateSubTaskResponse struct {
+	Message string                  `json:"message"`
+	Data    schemas.SubTaskResponse `json:"data"`
+}
+
+type UpdateSubTaskResponse struct {
+	Message string                  `json:"message"`
+	Data    schemas.SubTaskResponse `json:"data"`
+}
+
+type DeleteSubTaskResponse struct {
+	Message string                  `json:"message"`
+	Data    schemas.SubTaskResponse `json:"data"`
+}
+
+type GetSubTaskByIdResponse struct {
+	Message string                  `json:"message"`
+	Data    schemas.SubTaskResponse `json:"data"`
+}
+
+type ListSubTasksResponse struct {
+	Message string                    `json:"message"`
+	Data    []schemas.SubTaskResponse `json:"data"`
 }
