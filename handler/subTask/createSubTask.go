@@ -8,6 +8,18 @@ import (
 	"github.com/cairomedeiros/todo-list/schemas"
 )
 
+// @BasePath /api/v1
+
+// @Summary Create SubTask
+// @Description Create a new SubTask
+// @Tags SubTasks
+// @Accept json
+// @Produce json
+// @Param request body handler.CreateSubTaskRequest false "Request body"
+// @Success 200 {object} handler.SubTaskResponse
+// @Failure 400 {object} handler.ErrorResponse
+// @Failure 500 {object} handler.ErrorResponse
+// @Router /subTask/create [post]
 func CreateSubTaskHandler(w http.ResponseWriter, r *http.Request) {
 	db := handler.GetDB()
 
@@ -15,7 +27,7 @@ func CreateSubTaskHandler(w http.ResponseWriter, r *http.Request) {
 
 	err := json.NewDecoder(r.Body).Decode(&request)
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusBadRequest)
+		handler.SendError(w, http.StatusBadRequest, err.Error())
 		return
 	}
 
@@ -25,7 +37,7 @@ func CreateSubTaskHandler(w http.ResponseWriter, r *http.Request) {
 		Completed: request.Completed,
 	}
 	if err := db.Create(&subTask).Error; err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+		handler.SendError(w, http.StatusInternalServerError, err.Error())
 		return
 	}
 
