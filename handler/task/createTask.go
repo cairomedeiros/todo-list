@@ -16,7 +16,7 @@ import (
 // @Accept json
 // @Produce json
 // @Param request body handler.CreateTaskRequest false "Request body"
-// @Success 200 {object} schemas.TaskResponse
+// @Success 200 {object} handler.CreateTaskResponse
 // @Failure 400 {object} handler.ErrorResponse
 // @Failure 500 {object} handler.ErrorResponse
 // @Router /task/create [post]
@@ -42,7 +42,6 @@ func CreateTaskHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	w.WriteHeader(http.StatusOK)
-	json.NewEncoder(w).Encode(map[string]string{"message": "Task received and saved successfully"})
+	handler.SendSuccess(w, "create-task", task)
 
 }

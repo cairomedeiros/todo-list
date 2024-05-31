@@ -27,13 +27,12 @@ func ListAllHandler(w http.ResponseWriter, r *http.Request) {
 	result := db.Find(&tasks)
 
 	if result.Error != nil {
-		http.Error(w, result.Error.Error(), http.StatusInternalServerError)
 		handler.SendError(w, http.StatusInternalServerError, result.Error.Error())
 	}
 
 	log.Printf("%d tasks found.\n", result.RowsAffected)
 
-	w.WriteHeader(http.StatusOK)
+	handler.SendSuccess(w, "list-all-tasks", tasks)
 	if err := json.NewEncoder(w).Encode(tasks); err != nil {
 		handler.SendError(w, http.StatusBadRequest, err.Error())
 	}
