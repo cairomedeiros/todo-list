@@ -34,3 +34,16 @@ type UpdateSubTaskRequest struct {
 	Name      string `json:"name"`
 	Completed bool   `json:"completed"`
 }
+
+//user
+
+type RegisterRequest struct {
+	Name     string `validate:"required" json:"name"`
+	Email    string `validate:"required" json:"email"`
+	Password string `validate:"required" json:"password"`
+}
+
+type LoginRequest struct {
+	Email    string `validate:"required" json:"email"`
+	Password string `validate:"required" json:"password"`
+}
