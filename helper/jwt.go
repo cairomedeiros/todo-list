@@ -3,10 +3,9 @@ package helper
 import (
 	"time"
 
+	"github.com/cairomedeiros/todo-list/config"
 	"github.com/golang-jwt/jwt/v5"
 )
-
-var secretKey = []byte("secret-key")
 
 func CreateToken(email string) (string, error) {
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256,
@@ -15,7 +14,7 @@ func CreateToken(email string) (string, error) {
 			"exp":   time.Now().Add(time.Hour * 24).Unix(),
 		})
 
-	tokenString, err := token.SignedString(secretKey)
+	tokenString, err := token.SignedString(config.SecretKey)
 	if err != nil {
 		return "", err
 	}

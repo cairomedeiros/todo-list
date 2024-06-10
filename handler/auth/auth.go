@@ -1,14 +1,18 @@
 package auth
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"strings"
 
+	"github.com/cairomedeiros/todo-list/config"
 	"github.com/cairomedeiros/todo-list/handler"
 	"github.com/cairomedeiros/todo-list/helper"
 	"github.com/cairomedeiros/todo-list/schemas"
 	"github.com/go-playground/validator/v10"
+	"github.com/golang-jwt/jwt/v5"
 )
 
 type AuthHandler struct {
@@ -100,4 +104,39 @@ func (c AuthHandler) Login(w http.ResponseWriter, r *http.Request) {
 	}
 
 	handler.SendSuccess(w, "User logged successfully", token)
+}
+
+func (c AuthHandler) AuthMiddleware(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		authHeader := r.Header.Get("Authorization")
+		if authHeader == "" {
+			handler.SendError(w, http.StatusUnauthorized, "Authorization header is missing")
+			return
+		}
+
+		tokenString := strings.TrimPrefix(authHeader, "Bearer ")
+		if tokenString == authHeader {
+			handler.SendError(w, http.StatusUnauthorized, "Bearer token is missing")
+			return
+		}
+
+		token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
+			if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
+				return nil, fmt.Errorf("unexpected signing method: %v", token.Header["alg"])
+			}
+			return config.SecretKey, nil
+		})
+
+		if err != nil {
+			handler.SendError(w, http.StatusUnauthorized, "Invalid token")
+			return
+		}
+
+		if claims, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
+			ctx := context.WithValue(r.Context(), "email", claims["email"])
+			next.ServeHTTP(w, r.WithContext(ctx))
+		} else {
+			handler.SendError(w, http.StatusUnauthorized, "Invalid token")
+		}
+	})
 }
